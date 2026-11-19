@@ -1,0 +1,25 @@
+# Netlify serves the React app; /api and /uploads are proxied to the Render backend.
+# Because the browser only ever talks to the Netlify domain, the login cookie is first-party (no CORS needed).
+[build]
+  base = "client"
+  command = "npm run build"
+  publish = "dist"
+
+# ⬇ Replace RENDER-URL with your Render address, e.g. shuka-abc1.onrender.com
+[[redirects]]
+  from = "/api/*"
+  to = "https://RENDER-URL/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/uploads/*"
+  to = "https://RENDER-URL/uploads/:splat"
+  status = 200
+  force = true
+
+# Single-page app: every other path loads index.html and React Router takes over.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
